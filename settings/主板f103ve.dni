@@ -1,0 +1,233 @@
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[DebugChecksum]
+Checksum=-584032730
+[JLinkDriver]
+CStepIntDis=_ 0
+TraceBufferSize=0x00010000
+TraceStallIfFIFOFull=0x00000000
+TracePortSize=0x00000004
+[CodeCoverage]
+Enabled=_ 0
+[Exceptions]
+StopOnUncaught=_ 0
+StopOnThrow=_ 0
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[StLinkDriver]
+CStepIntDis=_ 0
+stlinkserialNo=CAD15059
+stlinkfoundProbes=
+[SWOTraceHWSettings]
+OverrideDefaultClocks=0
+CpuClock=72000000
+ClockAutoDetect=0
+ClockWanted=2000000
+JtagSpeed=2000000
+Prescaler=36
+TimeStampPrescIndex=0
+TimeStampPrescData=0
+PcSampCYCTAP=1
+PcSampPOSTCNT=15
+PcSampIndex=0
+DataLogMode=0
+ITMportsEnable=0
+ITMportsTermIO=0
+ITMportsLogFile=0
+ITMlogFile=$PROJ_DIR$\ITM.log
+[Trace2]
+Enabled=0
+ShowSource=0
+[SWOTraceWindow]
+PcSampling=0
+InterruptLogs=0
+ForcedTimeStamps=0
+EventCPI=0
+EventEXC=0
+EventFOLD=0
+EventLSU=0
+EventSLEEP=0
+[EventLog]
+Title_0=Ch3
+Symbol_0=0 4 1
+Title_1=Ch2
+Symbol_1=0 4 1
+Title_2=Ch1
+Symbol_2=0 4 1
+Title_3=Ch0
+Symbol_3=0 4 1
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+SumEnabled=0
+ShowTimeSum=1
+SumSortOrder=0
+[DriverProfiling]
+Enabled=0
+Mode=1
+Graph=0
+Symbiont=0
+Exclusions=
+[InterruptLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+SumEnabled=0
+ShowTimeSum=1
+SumSortOrder=0
+[DataLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+SumEnabled=0
+ShowTimeSum=1
+[Interrupts]
+Enabled=1
+Irq0=_ 0 10000 0 2500 1 0 0 100 0 1 "SysTick 1 0x3C"
+Count=1
+[MemConfig]
+Base=1
+Manual=0
+Ddf=1
+TypeViol=0
+Stop=1
+[Trace1]
+Enabled=0
+ShowSource=1
+[Simulator]
+Freq=8000000
+MultiCoreRunAll=1
+[struct_types]
+Fmt0=Detector_Cfg_struct-State_type	4	0
+Fmt1=Detector_Cfg_struct-address	4	0
+Fmt2=Detector_Cfg_struct-card_code	4	0
+Fmt3=Detector_Cfg_struct-channel_num	4	0
+Fmt4=Fault_Device_List_struct-CardAddress	3	0
+Fmt5=Fault_Device_List_struct-DetectorAddress	3	0
+Fmt6=Fault_Device_List_struct-DetectorChannel	4	0
+Fmt7=Fault_Device_List_struct-Event_Type	4	0
+Fmt8=Fault_Device_List_struct-Fault_Type	4	0
+Fmt9=OS_FLAG_GRP-OSFlagFlags	1	0
+Fmt10=OS_STK_DATA-OSFree	3	0
+Fmt11=OS_STK_DATA-OSUsed	3	0
+Fmt12=OS_TCB-OSTCBPrio	3	0
+Fmt13=OS_TCB-OSTCBStatPend	4	0
+Fmt14=SYSTEMTIME-Day	3	0
+Fmt15=SYSTEMTIME-Hour	3	0
+Fmt16=SYSTEMTIME-Minute	3	0
+Fmt17=SYSTEMTIME-Month	3	0
+Fmt18=SYSTEMTIME-Second	3	0
+Fmt19=SYSTEMTIME-Week	3	0
+Fmt20=SYSTEMTIME-Year	3	0
+Fmt21=struct Fault_Device_List_struct-CardAddress	3	0
+Fmt22=struct Fault_Device_List_struct-DetectorAddress	3	0
+Fmt23=struct Fault_Device_List_struct-Fault_Type	4	0
+[array_types]
+Fmt0=INT8U[256]	4	0
+Fmt1=INT8U[4]	4	0
+Fmt2=uint8_t[1000]	4	0
+Fmt3=uint8_t[10]	4	0
+Fmt4=uint8_t[200]	3	0
+Fmt5=uint8_t[24]	4	0
+Fmt6=uint8_t[256]	4	0
+Fmt7=uint8_t[2]	4	0
+Fmt8=uint8_t[30]	4	0
+Fmt9=uint8_t[32]	4	0
+Fmt10=uint8_t[3]	4	0
+Fmt11=uint8_t[4]	3	0
+Fmt12=uint8_t[50]	4	0
+Fmt13=uint8_t[8]	4	0
+Fmt14=unsigned char[8]	3	0
+[watch_formats]
+Fmt0={W}1:Addr	4	0
+Fmt1={W}1:CardRegistState	1	0
+Fmt2={W}1:Card_ID	3	0
+Fmt3={W}1:Card_Number	4	0
+Fmt4={W}1:Com	4	0
+Fmt5={W}1:Courrent_frame_ID	3	0
+Fmt6={W}1:Courrent_frame_len	3	0
+Fmt7={W}1:Cursor	4	0
+Fmt8={W}1:Data	4	0
+Fmt9={W}1:Data[3]	3	0
+Fmt10={W}1:Data[4]	3	0
+Fmt11={W}1:Data[6]	4	0
+Fmt12={W}1:Data[7]	4	0
+Fmt13={W}1:DetectorAddr	3	0
+Fmt14={W}1:Detector_Cfg.State_type	4	0
+Fmt15={W}1:Dst_Addr	3	0
+Fmt16={W}1:FaultIndex	3	0
+Fmt17={W}1:Fault_Item	4	0
+Fmt18={W}1:Fault_Num	3	0
+Fmt19={W}1:Fault_Total_Number	3	0
+Fmt20={W}1:FullFlag	3	0
+Fmt21={W}1:Index	3	0
+Fmt22={W}1:Key_Value	4	0
+Fmt23={W}1:Match_Number	3	0
+Fmt24={W}1:MaxPage	3	0
+Fmt25={W}1:My_Receive_Message->Data[1]	4	0
+Fmt26={W}1:My_Receive_Message->Data[2]	4	0
+Fmt27={W}1:N	3	0
+Fmt28={W}1:NumByteToRead	3	0
+Fmt29={W}1:Number	3	0
+Fmt30={W}1:OSPrioCur	3	0
+Fmt31={W}1:OSPrioHighRdy	3	0
+Fmt32={W}1:OSRdyGrp	1	0
+Fmt33={W}1:OSTCBCur->OSTCBStat	4	0
+Fmt34={W}1:Precedence_Fault_Total_Number	3	0
+Fmt35={W}1:ReadValue	4	0
+Fmt36={W}1:StartAddr	3	0
+Fmt37={W}1:StartPage	4	0
+Fmt38={W}1:Sum	3	0
+Fmt39={W}1:Sum1	3	0
+Fmt40={W}1:Sum2	3	0
+Fmt41={W}1:T	3	0
+Fmt42={W}1:Temp_Byte	3	0
+Fmt43={W}1:TotalFaultNum	3	0
+Fmt44={W}1:a	3	0
+Fmt45={W}1:check	4	0
+Fmt46={W}1:cnnnt	3	0
+Fmt47={W}1:cursor	3	0
+Fmt48={W}1:d	4	0
+Fmt49={W}1:err	4	0
+Fmt50={W}1:i	3	0
+Fmt51={W}1:int_id	4	0
+Fmt52={W}1:k	3	0
+Fmt53={W}1:pBuffer[i]	4	0
+Fmt54={W}1:pTemp_Fault_Device->DetectorAddress	3	0
+Fmt55={W}1:timeout	3	0
+Fmt56={W}1:ucData	4	0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 1
+LogFile=_ "$PROJ_DIR$\TermIO.log"
+[CallStackLog]
+Enabled=0
+[CallStackStripe]
+ShowTiming=1
+[Disassemble mode]
+mode=3
+[Breakpoints2]
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\APP\app_vect_v5.c}.312.9" 0 0 1 "" 0 "" 0
+Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\APP\app_vect_v5.c}.263.9" 0 0 1 "" 0 "" 0
+Bp2=_ 1 "EMUL_CODE" "{$PROJ_DIR$\APP\app_vect_v5.c}.337.9" 0 0 1 "" 0 "" 0
+Bp3=_ 1 "EMUL_CODE" "{$PROJ_DIR$\APP\app_vect_v5.c}.362.9" 0 0 1 "" 0 "" 0
+Bp4=_ 1 "EMUL_CODE" "{$PROJ_DIR$\APP\app_vect_v5.c}.287.9" 0 0 1 "" 0 "" 0
+Count=5
+[Aliases]
+A0=_ "D:\My doc\workspace\Myproduct20160905\STM32F103VE\APP\app.c" ""
+A1=_ "D:\My doc\workspace\Myproduct20160905\Ö÷°å\CA7000.0-CX-V10120161217\STM32F103VE\uCOS-II\Source\os_task.c" ""
+Count=2
+SuppressDialog=0

@@ -1,0 +1,15 @@
+"D:\Program Files\Develop Tool\EWARM\Install Directory\arm\bin\armproc.dll" 
+
+"D:\Program Files\Develop Tool\EWARM\Install Directory\arm\bin\armstlink2.dll" 
+
+"D:\My doc\workspace\Myproduct20160905\主板\CA7000.0-CX-V10120161227-移植通信任务\Debug\Exe\主板f103ve.out" 
+
+--plugin "D:\Program Files\Develop Tool\EWARM\Install Directory\arm\bin\armbat.dll" 
+
+--device_macro "D:\Program Files\Develop Tool\EWARM\Install Directory\arm\config\debugger\ST\STM32F1xx.dmac" 
+
+--flash_loader "D:\Program Files\Develop Tool\EWARM\Install Directory\arm\config\flashloader\ST\FlashSTM32F105xC.board" 
+
+
+
+

@@ -1,0 +1,23 @@
+"--endian=little" 
+
+"--cpu=Cortex-M3" 
+
+"--fpu=None" 
+
+"-p" 
+
+"D:\Program Files\Develop Tool\EWARM\Install Directory\arm\CONFIG\debugger\ST\STM32F105xC.ddf" 
+
+"--semihosting" 
+
+"--device=STM32F105xC" 
+
+"--stlink_reset_strategy=0,0" 
+
+"--drv_swo_clock_setup=72000000,0,2000000" 
+
+"--drv_catch_exceptions=0x000" 
+
+
+
+

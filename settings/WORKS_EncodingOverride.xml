@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<userOverrides>
+  <override>
+    <path>C:\Users\J\Desktop\CA7000.0-CX-V10120170215&#xFF08;1&#xFF09;\CA7000.0-CX-V10120170215&#xFF08;1&#xFF09;\APP\Task\Func\MainBianChen.c</path>
+    <encoding>GB2312</encoding>
+  </override>
+  <override>
+    <path>C:\Users\J\Desktop\CA7000.0-CX-V10120170216\CA7000.0-CX-V10120170216\APP\Task\Func\MainBianChen.c</path>
+    <encoding>GB2312</encoding>
+  </override>
+  <override>
+    <path>D:\My doc\workspace\Myproduct20160905\&#x4e3B;&#x677F;\STM32F103VE\APP\Task\Func\Sampling.c</path>
+    <encoding>GB2312</encoding>
+  </override>
+  <override>
+    <path>D:\My doc\workspace\Myproduct20160905\&#x4e3B;&#x677F;\STM32F103VE\APP\Task\Task_GUI.c</path>
+    <encoding>GB2312</encoding>
+  </override>
+  <override>
+    <path>D:\My doc\workspace\Myproduct20160905\&#x4e3B;&#x677F;\STM32F103VE\BSP\LCD\pymb.h</path>
+    <encoding>GB2312</encoding>
+  </override>
+  <override>
+    <path>D:\&#x7A0B;&#x5e8F;\CA7000\CA7000.0-CX-V10120170217\APP\Task\Func\MainBianChen.c</path>
+    <encoding>GB2312</encoding>
+  </override>
+  <override>
+    <path>D:\&#x7A0B;&#x5e8F;\CA7000\CA7000.0-CX-V10120170220\APP\Task\Func\MainBianChen.c</path>
+    <encoding>GB2312</encoding>
+  </override>
+  <override>
+    <path>D:\&#x7A0B;&#x5e8F;\CA7000\CA7000.0-CX-V10120170227\APP\Task\Func\MainBianChen.c</path>
+    <encoding>GB2312</encoding>
+  </override>
+  <override>
+    <path>D:\&#x7A0B;&#x5e8F;\CA7000\CA7000.0-CX-V102-170303\APP\Task\Func\MainBianChen.c</path>
+    <encoding>GB2312</encoding>
+  </override>
+</userOverrides>
+
+
