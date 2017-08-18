@@ -8,9 +8,9 @@
 #include <ucos_ii.h>
 
 
-#define	PROGRAM_TYPE 2			//程序类型定义 1：消防电源 	2：电气火灾
+#define	PROGRAM_TYPE 1			//程序类型定义 1：消防电源 	2：电气火灾
 
-#define	MAIN_BOARD 1			//硬件类型定义 1：旧硬件	2：新硬件
+#define	MAIN_BOARD 2			//硬件类型定义 1：旧硬件	2：新硬件
 
 #define	MainVersion         1
 #define	SubVersion          2
@@ -169,7 +169,7 @@ typedef enum
 /*Flash配置信息结构*/
 typedef struct{
 	uint8_t password[4];
-	uint8_t card_state;
+	uint8_t card_state;//是否登记
 	uint8_t print_state;
 }Config_TypeDef;
 /*Flash配置信息存储结构*/

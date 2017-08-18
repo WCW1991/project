@@ -87,6 +87,11 @@ static ErrorStatus GetCard_Inf( uint8_t Card_ID )
 	
 	return SUCCESS;
 }
+#if (PROGRAM_TYPE == 1)
+#define TYPE_NUMBER 4
+#else
+#define TYPE_NUMBER 3
+#endif
 static void RefreshDisplay(uint8_t TitleCursor,uint8_t Detector_Cfg_ID,uint8_t Type,uint8_t Channel,uint8_t DY,uint8_t *Description)
 {
 	uint8_t StartAddr=0,i=0;
@@ -95,19 +100,17 @@ static void RefreshDisplay(uint8_t TitleCursor,uint8_t Detector_Cfg_ID,uint8_t T
 	struct{uint8_t *String;uint8_t Value;
 	}TypeList[]={
 #if (PROGRAM_TYPE == 1)
-		{.String="三相四线",.Value=0x01},
-		{.String="三相三线",.Value=0x02},
-		{.String="单相电压",.Value=0x03},
-		{.String="单相电流",.Value=0x04},
-		{.String="四线电压",.Value=0x05},
-		{.String="三线电压",.Value=0x06},
-		#define TYPE_NUMBER 6
+		{.String="三相ＩＶ",.Value=0x01},
+		{.String="单相　Ｖ",.Value=0x03},
+		{.String="单相ＩＶ",.Value=0x04},
+		{.String="三相　Ｖ",.Value=0x05},
+		
 #endif
 #if (PROGRAM_TYPE == 2)
 		{.String="　温度　",.Value=0x11},
 		{.String="　漏电流",.Value=0x12},
 		{.String="　组合式",.Value=0x13},
-		#define TYPE_NUMBER 3
+		
 #endif
 	};
 	
@@ -250,18 +253,18 @@ uint8_t Manual_Register( uint8_t Card_ID )
 				key = *(Key_enum *)(OSMboxPend(Key_Mbox_Handle,0,&err));
 				if(key == Key_Down){
 #if (PROGRAM_TYPE == 1)
-					if(TypeIndex<6)
+					if(TypeIndex<TYPE_NUMBER)
 						TypeIndex++;
 					else
 						TypeIndex=0;
 #endif
 #if (PROGRAM_TYPE == 2)
-					if(TypeIndex<6)
-						TypeIndex=6;
-					if(TypeIndex<8)
+					if(TypeIndex<TYPE_NUMBER)
+						TypeIndex=TYPE_NUMBER;
+					if(TypeIndex<TYPE_NUMBER)
 						TypeIndex++;
 					else
-						TypeIndex=6;
+						TypeIndex=TYPE_NUMBER;
 #endif
 					Detector_Cfg.State_type=(Detector_Cfg.State_type&0x80)|(Type[TypeIndex]&0x7f);
 					continue;
@@ -272,9 +275,9 @@ uint8_t Manual_Register( uint8_t Card_ID )
 							TypeIndex--;
 #endif
 #if (PROGRAM_TYPE == 2)
-						if(TypeIndex<6)
-							TypeIndex=6;
-						if(TypeIndex>6){
+						if(TypeIndex<TYPE_NUMBER)
+							TypeIndex=TYPE_NUMBER;
+						if(TypeIndex>TYPE_NUMBER){
 							TypeIndex--;
 #endif
 							Detector_Cfg.State_type=(Detector_Cfg.State_type&0x80)|(Type[TypeIndex]&0x7f);

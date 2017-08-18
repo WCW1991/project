@@ -230,6 +230,7 @@ static void ZiKuChack( void )
 */
 void Init_Lcd( void )
 {
+	ScreenBuffS ScreenBuffer;
 	LCD_E = 0;
 	LCD_RST = 0;
 	Delay_NOP( 250 );
@@ -246,7 +247,11 @@ void Init_Lcd( void )
 	Write_Com( Com_Lcd_Line_Start | 0u );
 	Write_Com( Com_Lcd_On );
 	
-	if(SUCCESS != SpiFlashCheck())while(1);
+	if(SUCCESS != SpiFlashCheck())
+		while(1){
+			Set_Lcd( ScreenBuffer );
+			BufferToLCD( ScreenBuffer );
+		};
 	ZiKuChack();
 	
 	TurnOn_Backlight();
@@ -443,8 +448,7 @@ void DisplayValueN( uint16_t Value, uint8_t StartPage, uint8_t StartAddr, uint8_
 				if(Value<10000)
 					ValueNum=4;
 				else
-					if(Value<60000)
-						ValueNum=5;
+					ValueNum=5;
 	}
 	if(WeiNum>ValueNum)
 		ONum=WeiNum-ValueNum;

@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"D:\Program Files\Develop Tool\EWARM\Install Directory\common\bin\cspybat" -f "D:\My doc\主板程序\CA7000.0-CX-V102-170524版本差异合并\settings\CA7000.Debug.general.xcl" --backend -f "D:\My doc\主板程序\CA7000.0-CX-V102-170524版本差异合并\settings\CA7000.Debug.driver.xcl" 
+"D:\Program Files\Develop Tool\EWARM\Install Directory\common\bin\cspybat" -f "D:\My doc\MyGitHub\project\settings\CA7000.Debug.general.xcl" --backend -f "D:\My doc\MyGitHub\project\settings\CA7000.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"D:\Program Files\Develop Tool\EWARM\Install Directory\common\bin\cspybat" -f "D:\My doc\主板程序\CA7000.0-CX-V102-170524版本差异合并\settings\CA7000.Debug.general.xcl" "--debug_file=%~1" --backend -f "D:\My doc\主板程序\CA7000.0-CX-V102-170524版本差异合并\settings\CA7000.Debug.driver.xcl" 
+"D:\Program Files\Develop Tool\EWARM\Install Directory\common\bin\cspybat" -f "D:\My doc\MyGitHub\project\settings\CA7000.Debug.general.xcl" "--debug_file=%~1" --backend -f "D:\My doc\MyGitHub\project\settings\CA7000.Debug.driver.xcl" 
 
 @echo off 
 :end

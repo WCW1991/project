@@ -13,7 +13,7 @@ CStepIntDis=_ 0
 stlinkserialNo=606BBA25
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=1419637202
+Checksum=1359077621
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -42,19 +42,6 @@ CStepIntDis=_ 0
 TraceBufferSize=0x00010000
 TraceStallIfFIFOFull=0x00000000
 TracePortSize=0x00000004
-[struct_types]
-Fmt0=Detector_Cfg_struct-State_type	4	0
-[array_types]
-Fmt0=uint8_t[1000]	4	0
-Fmt1=uint8_t[192]	4	0
-[watch_formats]
-Fmt0={W}1:CardRegistState	4	0
-Fmt1={W}1:Card_ID	4	0
-Fmt2={W}1:Detector_Cfg_ID	3	0
-Fmt3={W}1:InputHzByteLen	3	0
-Fmt4={W}1:OSPrioCur	3	0
-Fmt5={W}1:err	3	0
-Fmt6={W}42:Card_ID	3	0
 [SWOTraceHWSettings]
 OverrideDefaultClocks=0
 CpuClock=72000000
@@ -72,6 +59,19 @@ ITMportsEnable=0
 ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
+[struct_types]
+Fmt0=Detector_Cfg_struct-State_type	4	0
+[array_types]
+Fmt0=uint8_t[1000]	4	0
+Fmt1=uint8_t[192]	4	0
+[watch_formats]
+Fmt0={W}1:CardRegistState	4	0
+Fmt1={W}1:Card_ID	4	0
+Fmt2={W}1:Detector_Cfg_ID	3	0
+Fmt3={W}1:InputHzByteLen	3	0
+Fmt4={W}1:OSPrioCur	3	0
+Fmt5={W}1:err	3	0
+Fmt6={W}42:Card_ID	3	0
 [Trace1]
 Enabled=0
 ShowSource=1

@@ -29,18 +29,19 @@ uint8_t Bujiantongji( void )
 			StringDisplay( "未登记", 0, 48,0, ScreenBuffer );
 		}
 		for(uint8_t i=0;i<6;i++)RegisterNum[i]=0;
+#if (PROGRAM_TYPE == 1)
+		StringDisplay( "　探测器总数：", 0, 84,0, ScreenBuffer );
+		StringDisplay( "三相Ｖ：", 2, 0,0, ScreenBuffer );
+		StringDisplay( "单相ＩＶ：", 4, 84,0, ScreenBuffer );
+		StringDisplay( "单相Ｖ：", 4, 0,0, ScreenBuffer );
+		StringDisplay( "三相ＩＶ：", 2, 84,0, ScreenBuffer );
+		StringDisplay( "未知：", 6, 0,0, ScreenBuffer );
 		for(uint8_t Detector_Cfg_ID=0;Detector_Cfg_ID<200;Detector_Cfg_ID++){
 			SpiFlashRead((uint8_t *)&Detector_Cfg,
 						 (Card_ID*200+Detector_Cfg_ID)*sizeof(Detector_Cfg_struct)+DeviceRecord_StartAddr,
 						 (uint16_t)sizeof(Detector_Cfg_struct));
 			if(Detector_Cfg.State_type!=0xff&&Detector_Cfg.State_type&0x80){
-#if (PROGRAM_TYPE == 1)
-				StringDisplay( "　探测器总数：", 0, 84,0, ScreenBuffer );
-				StringDisplay( "三相电压：", 2, 0,0, ScreenBuffer );
-				StringDisplay( "单相电流：", 4, 0,0, ScreenBuffer );
-				StringDisplay( "单相电压：", 6, 0,0, ScreenBuffer );
-				StringDisplay( "三相电压电流：", 2, 84,0, ScreenBuffer );
-				StringDisplay( "　　未知　　：", 4, 84,0, ScreenBuffer );
+
 				RegisterNum[0]++;
 				switch(Detector_Cfg.State_type&0x7f){
 					case sanxiangsanxian:
@@ -59,20 +60,29 @@ uint8_t Bujiantongji( void )
 						break;
 					default: RegisterNum[5]++;
 				}
-				/*总数*/
-				DisplayValueN( RegisterNum[0], 0, 168, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[1], 2, 168, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[2], 2, 60, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[3], 6, 60, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[4], 4, 60, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[5], 4, 168, 0, 3, ScreenBuffer);
+
+			}
+			/*总数*/
+			DisplayValueN( RegisterNum[0], 0, 168, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[1], 2, 136, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[2], 2, 40, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[3], 4, 40, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[4], 4, 136, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[5], 6, 28, 0, 3, ScreenBuffer);
+		}
 #endif
 #if (PROGRAM_TYPE == 2)
-				StringDisplay( "探测器总数：", 0, 96,0, ScreenBuffer );
-				StringDisplay( "　漏　电：", 2, 0,0, ScreenBuffer );
-				StringDisplay( "　温　度：", 2, 96,0, ScreenBuffer );
-				StringDisplay( "　组合式：", 4, 0,0, ScreenBuffer );
-				StringDisplay( "　未　知：", 4, 96,0, ScreenBuffer );
+		StringDisplay( "探测器总数：", 0, 96,0, ScreenBuffer );
+		StringDisplay( "　漏　电：", 2, 0,0, ScreenBuffer );
+		StringDisplay( "　温　度：", 2, 96,0, ScreenBuffer );
+		StringDisplay( "　组合式：", 4, 0,0, ScreenBuffer );
+		StringDisplay( "　未　知：", 4, 96,0, ScreenBuffer );
+		for(uint8_t Detector_Cfg_ID=0;Detector_Cfg_ID<200;Detector_Cfg_ID++){
+			SpiFlashRead((uint8_t *)&Detector_Cfg,
+						 (Card_ID*200+Detector_Cfg_ID)*sizeof(Detector_Cfg_struct)+DeviceRecord_StartAddr,
+						 (uint16_t)sizeof(Detector_Cfg_struct));
+			if(Detector_Cfg.State_type!=0xff&&Detector_Cfg.State_type&0x80){
+
 				RegisterNum[0]++;
 				switch(Detector_Cfg.State_type&0x7f){
 					case loudian:{
@@ -88,17 +98,15 @@ uint8_t Bujiantongji( void )
 						RegisterNum[5]++;
 					}break;
 				}
-				/*总数*/
-				DisplayValueN( RegisterNum[0], 0, 168, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[1], 2, 60, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[2], 2, 160, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[3], 4, 60, 0, 3, ScreenBuffer);
-				DisplayValueN( RegisterNum[5], 4, 160, 0, 3, ScreenBuffer);
-#endif
 			}
+			/*总数*/
+			DisplayValueN( RegisterNum[0], 0, 168, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[1], 2, 60, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[2], 2, 160, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[3], 4, 60, 0, 3, ScreenBuffer);
+			DisplayValueN( RegisterNum[5], 4, 160, 0, 3, ScreenBuffer);
 		}
-		if(RegisterNum[0] == 0) StringDisplay( "无探测器", 2, 24,0, ScreenBuffer );
-		
+#endif
 		My_Key_Message = OSMboxPend(Key_Mbox_Handle,MenuDelay,&err);//等待按键
 		if( err==OS_ERR_NONE ){
 			switch(*My_Key_Message){

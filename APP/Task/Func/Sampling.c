@@ -1,7 +1,20 @@
 #include "Sampling.h"
-
+void I(uint8_t *data, uint8_t tmp[]);
 static void Get_Detector( uint8_t CardNum, uint8_t Addr );
-
+void I(uint8_t *data, uint8_t tmp[])
+{
+	uint32_t current = 0;
+	switch(data[0]>>6){
+		case 0:{current = (((0x3F&data[0])<<8)|data[1])*1000;}break;
+		case 1:{current = (((0x3F&data[0])<<8)|data[1])*100;}break;
+		case 2:{current = (((0x3F&data[0])<<8)|data[1])*10;}break;
+		case 3:{current = (((0x3F&data[0])<<8)|data[1]);}break;
+	}
+	if(current < 10000) sprintf((char *)tmp, "%01d.%03d", current/1000, current%1000);
+	if(current >= 10000 && current < 100000) sprintf((char *)tmp, "%02d.%02d", current/1000, current%1000/10);
+	if(current >= 100000 && current < 1000000) sprintf((char *)tmp, "%03d.%01d", current/1000, current%1000/100);
+	if(current >= 1000000) sprintf((char *)tmp, "%04d", current/1000);
+}
 uint8_t Sampling( void )
 {
 	Key_enum key;
@@ -73,7 +86,6 @@ static void Get_Detector( uint8_t Card_ID, uint8_t Detector_Cfg_ID )
 	uint8_t StartAddr=0;
 	uint8_t *data;
 #if (PROGRAM_TYPE == 1)
-	uint32_t current = 0;
 	uint8_t tmp[8];
 #endif
 	
@@ -105,7 +117,6 @@ static void Get_Detector( uint8_t Card_ID, uint8_t Detector_Cfg_ID )
 					StringDisplay( "I3:", 6, 98, 0, ScreenBuffer );
 					StringDisplay( "S1:", 2, 150, 0, ScreenBuffer );
 					StringDisplay( "S2:", 4, 150, 0, ScreenBuffer );
-					
 					SendTimes++;
 					if(SUCCESS == get_data_detector(Card_ID, Detector_Cfg_ID, &data))
 					{
@@ -123,39 +134,23 @@ static void Get_Detector( uint8_t Card_ID, uint8_t Detector_Cfg_ID )
 								DisplayValueN( data[9]<<8|data[10],2, 72,0, 3, ScreenBuffer);//备A
 								DisplayValueN( data[11]<<8|data[12],4, 72,0, 3, ScreenBuffer);//备B
 								DisplayValueN( data[13]<<8|data[14],6, 72,0, 3, ScreenBuffer);//备C
+								I(&data[15], tmp);
+								StringDisplay(tmp, 2, 115, 0, ScreenBuffer);//IA
+								I(&data[17], tmp);
+								StringDisplay(tmp, 4, 115, 0, ScreenBuffer);//IB
+								I(&data[19], tmp);
+								StringDisplay(tmp, 6, 115, 0, ScreenBuffer);//IC
 							}else{
-								StringDisplay("-", 3, 72, 0, ScreenBuffer);//备A
-								StringDisplay("-", 5, 72, 0, ScreenBuffer);//备B
-								StringDisplay("-", 7, 72, 0, ScreenBuffer);//备C
+								StringDisplay("-", 2, 72, 0, ScreenBuffer);//备A
+								StringDisplay("-", 4, 72, 0, ScreenBuffer);//备B
+								StringDisplay("-", 6, 72, 0, ScreenBuffer);//备C
+								I(&data[9], tmp);
+								StringDisplay(tmp, 2, 115, 0, ScreenBuffer);//IA
+								I(&data[11], tmp);
+								StringDisplay(tmp, 4, 115, 0, ScreenBuffer);//IB
+								I(&data[13], tmp);
+								StringDisplay(tmp, 6, 115, 0, ScreenBuffer);//IC
 							}
-							
-							if((data[15]>>6) == 3) current = (((0x3F&data[15])<<8)|data[16]);
-							if((data[15]>>6) == 2) current = (((0x3F&data[15])<<8)|data[16])*10;
-							if((data[15]>>6) == 1) current = (((0x3F&data[15])<<8)|data[16])*100;
-							if((data[15]>>6) == 0) current = (((0x3F&data[15])<<8)|data[16])*1000;
-							if(current < 10000) sprintf((char *)tmp, "%01d.%03d", current/1000, current%1000);
-							if(current >= 10000 && current < 100000) sprintf((char *)tmp, "%02d.%02d", current/1000, current%1000/10);
-							if(current >= 100000 && current < 1000000) sprintf((char *)tmp, "%03d.%01d", current/1000, current%1000/100);
-							if(current >= 1000000) sprintf((char *)tmp, "%04d", current/1000);
-							StringDisplay(tmp, 2, 115, 0, ScreenBuffer);//IA
-							if((data[17]>>6) == 3) current = (((0x3F&data[17])<<8)|data[18]);
-							if((data[17]>>6) == 2) current = (((0x3F&data[17])<<8)|data[18])*10;
-							if((data[17]>>6) == 1) current = (((0x3F&data[17])<<8)|data[18])*100;
-							if((data[17]>>6) == 0) current = (((0x3F&data[17])<<8)|data[18])*1000;
-							if(current < 10000) sprintf((char *)tmp, "%01d.%03d", current/1000, current%1000);
-							if(current >= 10000 && current < 100000) sprintf((char *)tmp, "%02d.%02d", current/1000, current%1000/10);
-							if(current >= 100000 && current < 1000000) sprintf((char *)tmp, "%03d.%01d", current/1000, current%1000/100);
-							if(current >= 1000000) sprintf((char *)tmp, "%04d", current/1000);
-							StringDisplay(tmp, 4, 115, 0, ScreenBuffer);//IB
-							if((data[19]>>6) == 3) current = (((0x3F&data[19])<<8)|data[20]);
-							if((data[19]>>6) == 2) current = (((0x3F&data[19])<<8)|data[20])*10;
-							if((data[19]>>6) == 1) current = (((0x3F&data[19])<<8)|data[20])*100;
-							if((data[19]>>6) == 0) current = (((0x3F&data[19])<<8)|data[20])*1000;
-							if(current < 10000) sprintf((char *)tmp, "%01d.%03d", current/1000, current%1000);
-							if(current >= 10000 && current < 100000) sprintf((char *)tmp, "%02d.%02d", current/1000, current%1000/10);
-							if(current >= 100000 && current < 1000000) sprintf((char *)tmp, "%03d.%01d", current/1000, current%1000/100);
-							if(current >= 1000000) sprintf((char *)tmp, "%04d", current/1000);
-							StringDisplay(tmp, 6, 115, 0, ScreenBuffer);//IC
 						}else{
 							ErrorTimes++;
 						}
@@ -178,6 +173,49 @@ static void Get_Detector( uint8_t Card_ID, uint8_t Detector_Cfg_ID )
 			case danxiangdianya:
 				while(1)
 				{
+					StartAddr=0;
+					StringDisplay( "回路：", 0, StartAddr, 0, ScreenBuffer );StartAddr+=33;
+					DisplayValueN( Card_ID, 0, StartAddr, 1, 3, ScreenBuffer);StartAddr+=18+9;
+					StringDisplay( "地址：", 0, StartAddr, 0, ScreenBuffer );StartAddr+=33;
+					DisplayValueN( Detector_Cfg_ID,0, StartAddr, 1, 3, ScreenBuffer);StartAddr+=18+15;
+					StringDisplay( "S1:", 2, 150, 0, ScreenBuffer );
+					StringDisplay( "S2:", 4, 150, 0, ScreenBuffer );
+					StringDisplay( "V1:", 2, 0 , 0, ScreenBuffer );
+					if(Detector_Cfg.channel_num==2||Detector_Cfg.channel_num==4){
+						StringDisplay( "V2:", 2, 48 , 0, ScreenBuffer );
+						if(Detector_Cfg.channel_num==4){
+							StringDisplay( "V3:", 4, 0 , 0, ScreenBuffer );
+							StringDisplay( "V4:", 4, 48, 0, ScreenBuffer );
+						}
+					}
+					SendTimes++;
+					if(SUCCESS == get_data_detector(Card_ID, Detector_Cfg_ID, &data))
+					{
+						if( data[0] == 0x01 ){
+							switch(data[2]){
+								case 0x00:{StringDisplay( "断开", 2, 168, 0, ScreenBuffer );StringDisplay( "断开", 4, 168, 0, ScreenBuffer );}break;
+								case 0x01:{StringDisplay( "闭合", 2, 168, 0, ScreenBuffer );StringDisplay( "断开", 4, 168, 0, ScreenBuffer );}break;
+								case 0x02:{StringDisplay( "断开", 2, 168, 0, ScreenBuffer );StringDisplay( "闭合", 4, 168, 0, ScreenBuffer );}break;
+								case 0x03:{StringDisplay( "闭合", 2, 168, 0, ScreenBuffer );StringDisplay( "闭合", 4, 168, 0, ScreenBuffer );}break;
+							}
+							DisplayValueN( data[3] <<8|data[4] ,2, 24, 0, 3, ScreenBuffer);//V1
+							if(Detector_Cfg.channel_num==2||Detector_Cfg.channel_num==4){
+								DisplayValueN( data[5] <<8|data[6] ,2, 72, 0, 3, ScreenBuffer);//V2
+								if(Detector_Cfg.channel_num==4){
+									DisplayValueN( data[7] <<8|data[8] ,4, 24, 0, 3, ScreenBuffer);//V3
+									DisplayValueN( data[7] <<8|data[8] ,4, 72, 0, 3, ScreenBuffer);//V4
+								}
+							}
+						}else{
+							ErrorTimes++;
+						}
+					}else{
+						ErrorTimes++;
+					}
+					if(SendTimes >= 10000) SendTimes = 0;
+					if(ErrorTimes >= 10000) ErrorTimes = 0;
+//					DisplayValue(SendTimes,6,168,0, 4, ScreenBuffer);
+//					DisplayValue(ErrorTimes,7,168,1, 4, ScreenBuffer);
 					My_Key_Message = OSMboxPend(Key_Mbox_Handle,2000,&err);//查看按键
 					if(OS_ERR_NONE == err){
 						if(*My_Key_Message==Key_Return){
@@ -185,10 +223,50 @@ static void Get_Detector( uint8_t Card_ID, uint8_t Detector_Cfg_ID )
 						}
 					}
 				}
-				break;
 			case danxiangdianliu:
 				while(1)
 				{
+					StartAddr=0;
+					StringDisplay( "回路：", 0, StartAddr, 0, ScreenBuffer );StartAddr+=33;
+					DisplayValueN( Card_ID, 0, StartAddr, 1, 3, ScreenBuffer);StartAddr+=18+9;
+					StringDisplay( "地址：", 0, StartAddr, 0, ScreenBuffer );StartAddr+=33;
+					DisplayValueN( Detector_Cfg_ID,0, StartAddr, 1, 3, ScreenBuffer);StartAddr+=18+15;
+					StringDisplay( "S1:", 2, 150, 0, ScreenBuffer );
+					StringDisplay( "S2:", 4, 150, 0, ScreenBuffer );
+					StringDisplay( "V1:", 2, 0 , 0, ScreenBuffer );
+					StringDisplay( "I1:", 2, 48, 0, ScreenBuffer );
+					if(Detector_Cfg.channel_num==2){
+						StringDisplay( "V2:", 4, 0 , 0, ScreenBuffer );
+						StringDisplay( "I2:", 4, 48, 0, ScreenBuffer );
+					}
+					SendTimes++;
+					if(SUCCESS == get_data_detector(Card_ID, Detector_Cfg_ID, &data))
+					{
+						if( data[0] == 0x01 ){
+							switch(data[2]){
+								case 0x00:{StringDisplay( "断开", 2, 168, 0, ScreenBuffer );StringDisplay( "断开", 4, 168, 0, ScreenBuffer );}break;
+								case 0x01:{StringDisplay( "闭合", 2, 168, 0, ScreenBuffer );StringDisplay( "断开", 4, 168, 0, ScreenBuffer );}break;
+								case 0x02:{StringDisplay( "断开", 2, 168, 0, ScreenBuffer );StringDisplay( "闭合", 4, 168, 0, ScreenBuffer );}break;
+								case 0x03:{StringDisplay( "闭合", 2, 168, 0, ScreenBuffer );StringDisplay( "闭合", 4, 168, 0, ScreenBuffer );}break;
+							}
+							DisplayValueN( data[3] <<8|data[4] ,2, 24, 0, 3, ScreenBuffer);//V1
+							I(&data[5], tmp);
+							StringDisplay(tmp, 2, 72, 0, ScreenBuffer);//I1
+							if(Detector_Cfg.channel_num==2){
+								DisplayValueN( data[7] <<8|data[8] ,4, 24, 0, 3, ScreenBuffer);//V2
+								I(&data[9], tmp);
+								StringDisplay(tmp, 4, 72, 0, ScreenBuffer);//I2
+							}
+						}else{
+							ErrorTimes++;
+						}
+					}else{
+						ErrorTimes++;
+					}
+					if(SendTimes >= 10000) SendTimes = 0;
+					if(ErrorTimes >= 10000) ErrorTimes = 0;
+//					DisplayValue(SendTimes,6,168,0, 4, ScreenBuffer);
+//					DisplayValue(ErrorTimes,7,168,1, 4, ScreenBuffer);
 					My_Key_Message = OSMboxPend(Key_Mbox_Handle,2000,&err);//查看按键
 					if(OS_ERR_NONE == err){
 						if(*My_Key_Message==Key_Return){
@@ -228,13 +306,13 @@ static void Get_Detector( uint8_t Card_ID, uint8_t Detector_Cfg_ID )
 							DisplayValueN( data[5] <<8|data[6] ,4, 24, 0, 3, ScreenBuffer);//主B
 							DisplayValueN( data[7] <<8|data[8] ,6, 24, 0, 3, ScreenBuffer);//主C
 							if(Detector_Cfg.channel_num==2){
-								DisplayValueN( data[9]<<8|data[10],2, 96,0, 3, ScreenBuffer);//备A
-								DisplayValueN( data[11]<<8|data[12],4, 96,0, 3, ScreenBuffer);//备B
-								DisplayValueN( data[13]<<8|data[14],6, 96,0, 3, ScreenBuffer);//备C
+								DisplayValueN( data[9]<<8|data[10],2, 72,0, 3, ScreenBuffer);//备A
+								DisplayValueN( data[11]<<8|data[12],4, 72,0, 3, ScreenBuffer);//备B
+								DisplayValueN( data[13]<<8|data[14],6, 72,0, 3, ScreenBuffer);//备C
 							}else{
-								StringDisplay("-", 3, 96, 0, ScreenBuffer);//备A
-								StringDisplay("-", 5, 96, 0, ScreenBuffer);//备B
-								StringDisplay("-", 7, 96, 0, ScreenBuffer);//备C
+								StringDisplay("-", 2, 72, 0, ScreenBuffer);//备A
+								StringDisplay("-", 4, 72, 0, ScreenBuffer);//备B
+								StringDisplay("-", 6, 72, 0, ScreenBuffer);//备C
 							}
 						}else{
 							ErrorTimes++;

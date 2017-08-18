@@ -5,7 +5,7 @@
 
 typedef struct Fault_Device_List_struct
 {
-	uint8_t Update;
+	uint8_t Update;//更新故障时标记当前存在的故障
 	uint8_t Event_Type;
 	uint8_t CardAddress;
 	uint8_t DetectorAddress;

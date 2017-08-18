@@ -223,11 +223,11 @@ static void CardPolling(void)
 	static uint8_t Card_ID=0;
 	uint8_t *data = NULL;
 	
-	if(Config.card_state==0) OSTimeDlyHMSM(0,0,1,0);
+	if(Config.card_state==0) OSTimeDlyHMSM(0,0,1,0);//检查是否有回路版登记
 	else{
 		for(i=0;i<CARD_NUM_MAX;i++){
 		  	if(Card_ID >= CARD_NUM_MAX) Card_ID = 0;
-			if(!(Config.card_state&(0x01<<Card_ID++)))
+			if(!(Config.card_state&(0x01<<Card_ID++)))//检查当前回路板是否登记
 			{
 				CardState.Inform[Card_ID-1] = ERROR;
 				CardState.Card_lose[Card_ID-1] = 0;
@@ -237,8 +237,7 @@ static void CardPolling(void)
 			
 			if(CardState.Inform[Card_ID-1]==SUCCESS){//查看回路板是否获得探测器登记信息
 				if(SUCCESS != poll_data_card(Card_ID, &data)){ OnceCardState=CardLost; goto cardlost;}
-				if(data[1]&0x04)
-				{
+				if(data[1]&0x04){
 					/******************************/
 					Record.event.card_code = Card_ID;
 					Record.event.address = 0x00;
@@ -265,7 +264,7 @@ static void CardPolling(void)
 			cardlost:
 				if(OnceCardState==CardNormal){/*回路正常应答*/
 					Remove_CardFault( Card_ID );//如果之前报了丢失则恢复
-					if(data[2]) DealWith_Detector(data,Card_ID);//处理探测器故障
+					if(data[2]) DealWith_Detector(data,Card_ID);//判断回路故障数，大于0则处理探测器故障
 					else Remove_All_Detector_Fult( Card_ID );//移除当前回路所有探测器故障
 				}else if(OnceCardState==CardNoCost || OnceCardState==CardDuanLu)
 					CardFault( Card_ID,OnceCardState );
@@ -341,7 +340,7 @@ static void DealWith_Detector( uint8_t *Data, uint8_t Card_ID )
 	uint8_t length_used = 0;
 	uint16_t i = 0;
 	uint16_t N=0;
-	
+	//
 	if(Fault_Total_Number)
 	{
 		pTemp_Fault_Device = Fault_Device_Tail->next;
@@ -361,17 +360,17 @@ static void DealWith_Detector( uint8_t *Data, uint8_t Card_ID )
 		}
 	}
 	
-	data_point = 3;
-	for(N=0;N<Data[2];N++){
+	data_point = 3;//故障数据在协议里是从第6个字节开始的，去掉前两个默认字节，是从第4个字节开始的，所以这赋值3
+	for(N=0;N<Data[2];N++){//解析数据里每个探测器
 		if(SUCCESS != Protocol_Analysis_Fault(&one_detector_record, Card_ID, &Data[data_point], &length_used)) return ;
-		data_point += length_used;
+		data_point += length_used;//偏移一个故障所占字节数
 		for(i=0; i<one_detector_record.Mum; i++)
-		{
-			FlautManage_And_FlautStorageManage(one_detector_record.RecordArray[i]);//判断之前是否有故障
+		{//循环处理一个探测器里的每个故障
+			FlautManage_And_FlautStorageManage(one_detector_record.RecordArray[i]);
 		}
 	}
 	
-	if(Fault_Total_Number)
+	if(Fault_Total_Number)//把本回路的旧故障删除
 	{
 		number = Fault_Total_Number;
 		tmp = Fault_Device_Tail;
@@ -387,7 +386,7 @@ static void DealWith_Detector( uint8_t *Data, uint8_t Card_ID )
 	}
 	
 #if (PROGRAM_TYPE == 1)
-	if(Precedence_Fault_Total_Number)
+	if(Precedence_Fault_Total_Number)//把本回路的旧故障删除
 	{
 		number = Precedence_Fault_Total_Number;
 		
@@ -431,7 +430,6 @@ static ErrorStatus Protocol_Analysis_Fault( OneDetectorRecordS *OneDetectorRecor
 		OneDetectorRecord->RecordArray[i].event.address=FaultData[0];//探测器地址
 		OneDetectorRecord->RecordArray[i].event.area_code=1;
 		OneDetectorRecord->RecordArray[i].event.area_machine=1;
-		OneDetectorRecord->RecordArray[i].event.channel=1;
 		OneDetectorRecord->RecordArray[i].event.event_type = 0x08;
 		
 		switch(Detector_Cfg.State_type&0x7f){//判断故障类型
@@ -476,7 +474,8 @@ static ErrorStatus Protocol_Analysis_Fault( OneDetectorRecordS *OneDetectorRecor
 					OneDetectorRecord->RecordArray[i].event.description=0;//故障描述
 				}
 			}break;
-			case 0x03:{//单相电压
+			case 0x03:
+			case 0x04:{//单相
 				if(FaultData[i+2]!=0xFF){
 					OneDetectorRecord->RecordArray[i].event.channel=(FaultData[i+2]&0x1F)+1;//电源号
 					switch(FaultData[i+2]>>5){//判断故障类型
@@ -675,9 +674,9 @@ static void FlautManage_And_FlautStorageManage( Record_struct Record )
 		OSFlagPost(FLAG_GRP,GuZhangFlag,OS_FLAG_SET,&err);//故障标志
 	}
 	
-	if(ERROR==Fault_Device_List_Matching( Record,*List ))
+	if(ERROR==Fault_Device_List_Matching( Record,*List ))//判断是否有相同故障
 	{
-		AddOneFault( List, &Record, Total_Number );
+		AddOneFault( List, &Record, Total_Number );//添加新故障
 		if(Config.print_state)
 		{
 			OS_ENTER_CRITICAL()
