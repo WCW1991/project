@@ -203,7 +203,7 @@ static void Get_Detector( uint8_t Card_ID, uint8_t Detector_Cfg_ID )
 								DisplayValueN( data[5] <<8|data[6] ,2, 72, 0, 3, ScreenBuffer);//V2
 								if(Detector_Cfg.channel_num==4){
 									DisplayValueN( data[7] <<8|data[8] ,4, 24, 0, 3, ScreenBuffer);//V3
-									DisplayValueN( data[7] <<8|data[8] ,4, 72, 0, 3, ScreenBuffer);//V4
+									DisplayValueN( data[9] <<8|data[10] ,4, 72, 0, 3, ScreenBuffer);//V4
 								}
 							}
 						}else{
