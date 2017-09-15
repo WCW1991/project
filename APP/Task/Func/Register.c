@@ -172,7 +172,12 @@ uint8_t Manual_Register( uint8_t Card_ID )
 	char Description[17]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,};//可存储8个汉字+0
 	uint8_t i, err;
 	uint8_t TitleCursor=0;
-	uint8_t Type[10]={0x01,0x02,0x03,0x04,0x05,0x06,0x11,0x12,0x13,0xff};
+#if (PROGRAM_TYPE == 1)
+	uint8_t Type[TYPE_NUMBER+1]={0x01,0x03,0x04,0x05,0xff};
+#endif
+#if (PROGRAM_TYPE == 2)
+	uint8_t Type[TYPE_NUMBER+1]={0x11,0x12,0x13,0xff};
+#endif
 	uint8_t TypeIndex=0;
 	uint8_t DY=0xff;
 	Detector_Cfg_struct Detector_Cfg;
@@ -192,17 +197,17 @@ uint8_t Manual_Register( uint8_t Card_ID )
 		}
 	}
 	if(Detector_Cfg.State_type!=0xff){
-		for(i=0;i<9;i++){//找出类型
+		for(i=0;i<TYPE_NUMBER;i++){//找出类型
 			if((Detector_Cfg.State_type&0x7f)==Type[i]){
 				TypeIndex=i;
 				break;
 			}
 		}
-		if(i==9)
-			TypeIndex=9;
+		if(i==TYPE_NUMBER)
+			TypeIndex=TYPE_NUMBER;
 		if(Detector_Cfg.State_type&0x80)DY=0x01;
 		else DY=0xff;
-	}else {DY=0xff;TypeIndex=9;}
+	}else {DY=0xff;TypeIndex=TYPE_NUMBER;}
 	for(;;){
 		RefreshDisplay(TitleCursor,Detector_Cfg_ID,Type[TypeIndex],Detector_Cfg.channel_num,DY,(uint8_t*)Description);
 		
@@ -233,53 +238,34 @@ uint8_t Manual_Register( uint8_t Card_ID )
 						}
 					}
 					if(Detector_Cfg.State_type!=0xff){
-						for(i=0;i<9;i++){
+						for(i=0;i<TYPE_NUMBER;i++){//找出类型
 							if((Detector_Cfg.State_type&0x7f)==Type[i]){
 								TypeIndex=i;
 								break;
 							}
 						}
-						if(i==9)
-							TypeIndex=9;
-						if(Detector_Cfg.State_type&0x80)
-							DY=0x01;
-						else
-							DY=0xff;
-					}else {DY=0xff;TypeIndex=9;}
+						if(i==TYPE_NUMBER)
+							TypeIndex=TYPE_NUMBER;
+						if(Detector_Cfg.State_type&0x80)DY=0x01;
+						else DY=0xff;
+					}else {DY=0xff;TypeIndex=TYPE_NUMBER;}
 				}
 				goto MyKey;
 			}break;
+#if (PROGRAM_TYPE == 1)
 			case 1:{//类型
 				key = *(Key_enum *)(OSMboxPend(Key_Mbox_Handle,0,&err));
 				if(key == Key_Down){
-#if (PROGRAM_TYPE == 1)
 					if(TypeIndex<TYPE_NUMBER)
 						TypeIndex++;
 					else
 						TypeIndex=0;
-#endif
-#if (PROGRAM_TYPE == 2)
-					if(TypeIndex<TYPE_NUMBER)
-						TypeIndex=TYPE_NUMBER;
-					if(TypeIndex<TYPE_NUMBER)
-						TypeIndex++;
-					else
-						TypeIndex=TYPE_NUMBER;
-#endif
 					Detector_Cfg.State_type=(Detector_Cfg.State_type&0x80)|(Type[TypeIndex]&0x7f);
 					continue;
 				}else{
 					if(key == Key_Up){
-#if (PROGRAM_TYPE == 1)
 						if(TypeIndex>0){
 							TypeIndex--;
-#endif
-#if (PROGRAM_TYPE == 2)
-						if(TypeIndex<TYPE_NUMBER)
-							TypeIndex=TYPE_NUMBER;
-						if(TypeIndex>TYPE_NUMBER){
-							TypeIndex--;
-#endif
 							Detector_Cfg.State_type=(Detector_Cfg.State_type&0x80)|(Type[TypeIndex]&0x7f);
 						}
 						continue;
@@ -287,6 +273,29 @@ uint8_t Manual_Register( uint8_t Card_ID )
 				}
 				goto MyKey;
 			}break;
+#endif
+#if (PROGRAM_TYPE == 2)
+			case 1:{//类型
+				key = *(Key_enum *)(OSMboxPend(Key_Mbox_Handle,0,&err));
+				if(key == Key_Down){
+					if(TypeIndex<TYPE_NUMBER)
+						TypeIndex++;
+					else
+						TypeIndex=0;
+					Detector_Cfg.State_type=(Detector_Cfg.State_type&0x80)|(Type[TypeIndex]&0x7f);
+					continue;
+				}else{
+					if(key == Key_Up){
+						if(TypeIndex>0){
+							TypeIndex--;
+							Detector_Cfg.State_type=(Detector_Cfg.State_type&0x80)|(Type[TypeIndex]&0x7f);
+						}
+						continue;
+					}
+				}
+				goto MyKey;
+			}break;
+#endif
 			case 2://通道
 				key = input_value8( &(Detector_Cfg.channel_num), 3, 2, 96+3 );
 				goto MyKey;

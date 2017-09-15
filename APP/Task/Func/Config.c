@@ -21,7 +21,7 @@ void config_init(void)
 	
 	SpiFlashRead((uint8_t *)&p, CfgRecord_StartAddr, sizeof(Config_Store));
 	crc16 = crc_16((uint8_t *)&p, sizeof(Config_TypeDef));
-	if(crc16 != p.crc16)
+	if(crc16 != p.crc16||p.crc16==0xff)
 	{
 		for(uint8_t x=52;x<=58;x++){//²Á³ýµÚ53-59ÉÈÇø
 			SpiFlashEraseSector(x);
