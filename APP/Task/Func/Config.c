@@ -30,6 +30,8 @@ void config_init(void)
 		memset(Config.password, 1, 4);
 		Config.card_state = 0;
 		Config.print_state = 0;
+		Config.machine_cfg.area_code=0;
+		Config.machine_cfg.area_machine=0;
 		config_store();
 	}
 	else

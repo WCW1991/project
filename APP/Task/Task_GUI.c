@@ -106,13 +106,24 @@ void Task_GUI( void )
 #else
 							StringDisplay( "ＣＡ６５００", 0, 0, 0, ScreenBuffer );
 #endif
-						StringDisplay( "硬件版本：", 2, 50, 0, ScreenBuffer );
+						StringDisplay( "硬件版本：", 4, 0, 0, ScreenBuffer );
 						sprintf((char*)s,"V%d.01",MAIN_BOARD);
-						StringDisplay( s, 2, 110, 0, ScreenBuffer );
+						StringDisplay( s, 4, 60, 0, ScreenBuffer );
 						
-						StringDisplay( "软件版本：", 4, 50, 0, ScreenBuffer );
+						StringDisplay( "软件版本：", 6, 0, 0, ScreenBuffer );
 						sprintf((char*)s,"V%d.%02d",MainVersion,SubVersion);
-						StringDisplay( s, 4, 110, 0, ScreenBuffer );
+						StringDisplay( s, 6, 60, 0, ScreenBuffer );
+						
+						sprintf((char*)s,"ID:%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+								((uint8_t *)0x1FFFF7E8)[0],((uint8_t *)0x1FFFF7E8)[1],
+								((uint8_t *)0x1FFFF7E8)[2],((uint8_t *)0x1FFFF7E8)[3],
+								((uint8_t *)0x1FFFF7E8)[4],((uint8_t *)0x1FFFF7E8)[5],
+								((uint8_t *)0x1FFFF7E8)[6],((uint8_t *)0x1FFFF7E8)[7],
+								((uint8_t *)0x1FFFF7E8)[8],((uint8_t *)0x1FFFF7E8)[9],
+								((uint8_t *)0x1FFFF7E8)[10],((uint8_t *)0x1FFFF7E8)[11]);
+						StringDisplay( s, 2, 0, 0, ScreenBuffer );
+						
+						
 						My_Key_Message = OSMboxPend(Key_Mbox_Handle,MenuDelay,&err);//等待按键
 						if( err==OS_ERR_NONE ){
 							if(*My_Key_Message==Key_Return)break;

@@ -171,6 +171,10 @@ typedef struct{
 	uint8_t password[4];
 	uint8_t card_state;//是否登记
 	uint8_t print_state;
+	struct {
+		uint8_t area_code;
+		uint8_t area_machine;
+	}machine_cfg;
 }Config_TypeDef;
 /*Flash配置信息存储结构*/
 typedef struct{

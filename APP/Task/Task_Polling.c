@@ -47,6 +47,8 @@ void Task_Polling( void )
 	
 	OSTimeDlyHMSM(0,0,1,0);
 	
+	Record.event.area_code = Config.machine_cfg.area_code;
+	Record.event.area_machine = Config.machine_cfg.area_machine;
 	Record.event.card_code = 0x00;
 	Record.event.address = 0x00;
 	Record.event.channel = 0x00;
@@ -428,8 +430,8 @@ static ErrorStatus Protocol_Analysis_Fault( OneDetectorRecordS *OneDetectorRecor
 		OneDetectorRecord->RecordArray[i].event.device_type=0x0E;//电气火灾
 		OneDetectorRecord->RecordArray[i].event.card_code=Card_ID;//回路板地址
 		OneDetectorRecord->RecordArray[i].event.address=FaultData[0];//探测器地址
-		OneDetectorRecord->RecordArray[i].event.area_code=1;
-		OneDetectorRecord->RecordArray[i].event.area_machine=1;
+		OneDetectorRecord->RecordArray[i].event.area_code=Config.machine_cfg.area_code;
+		OneDetectorRecord->RecordArray[i].event.area_machine=Config.machine_cfg.area_machine;
 		OneDetectorRecord->RecordArray[i].event.event_type = 0x08;
 		
 		switch(Detector_Cfg.State_type&0x7f){//判断故障类型
@@ -653,7 +655,10 @@ ErrorStatus Fault_Device_List_Matching( Record_struct Record,Fault_Device_List_s
 	}while(!(pTemp_Fault_Device==List));
 	return ERROR;
 }
-
+/*******************************************************************************
+*描述：将故障添加到故障链表，然后上报、然后存储，最后置标志位
+*此函数算是本程序的核心了
+*******************************************************************************/
 static void FlautManage_And_FlautStorageManage( Record_struct Record )
 {
 	uint8_t  err;

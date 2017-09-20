@@ -13,7 +13,7 @@ CStepIntDis=_ 0
 stlinkserialNo=606BBA25
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=1440051046
+Checksum=-1529411873
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -64,6 +64,7 @@ Fmt0=Detector_Cfg_struct-State_type	4	0
 [array_types]
 Fmt0=uint8_t[1000]	4	0
 Fmt1=uint8_t[192]	4	0
+Fmt2=uint8_t[7]	4	0
 [watch_formats]
 Fmt0={W}1:CardRegistState	4	0
 Fmt1={W}1:Card_ID	4	0

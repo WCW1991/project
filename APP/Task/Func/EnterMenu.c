@@ -3,7 +3,7 @@
 extern TIM_HandleTypeDef htim1;
 
 static uint8_t HuiLuBianChen(void);
-
+static uint8_t MachineSet( void );
 void EnterMenu(void)
 {
 	uint8_t  err;
@@ -128,9 +128,10 @@ void EnterMenu(void)
 			StringDisplay( "１密码设置", 0, 0,0, ScreenBuffer );
 			StringDisplay( "２时间设置", 2, 0,0, ScreenBuffer );
 			StringDisplay( "３打印设置", 4, 0,0, ScreenBuffer );
-			
+			StringDisplay( "４机号设置", 0, 80,0, ScreenBuffer );
 #if (PROGRAM_TYPE == 2)
 			StringDisplay( "４探测器设置", 0, 80,0, ScreenBuffer );
+			StringDisplay( "５机号设置", 2, 80,0, ScreenBuffer );
 #endif
 
 			//StringDisplay( "安吉斯智能设备", 6, 50,0, ScreenBuffer );
@@ -140,9 +141,11 @@ void EnterMenu(void)
 				case Key_1:{if(1 == ModifyPassword()) return;}break;
 				case Key_2:{if(1 == SetTime()) return;}break;
 				case Key_3:{if(1 == PrinterSet()) return;}break;
+				case Key_4:{if(1 == MachineSet()) return;}break;
 
 #if (PROGRAM_TYPE == 2)
 				case Key_4:{if(1 == SetThreshold()) return;}break;
+				case Key_5:{if(1 == MachineSet()) return;}break;
 #endif
 
 				case Key_Return:{GUI=Main_Menu;}break;
@@ -211,3 +214,65 @@ static uint8_t HuiLuBianChen(void)
 		}
 	}
 }
+static uint8_t MachineSet( void )
+{
+	Key_enum key;
+	enum{
+		area_code_Cursor=0,
+		area_machine_Cursor
+	}Cursor=area_code_Cursor;
+	uint16_t crc16;
+	Config_Store p;
+	
+	SpiFlashRead((uint8_t *)&p, CfgRecord_StartAddr, sizeof(Config_Store));
+	crc16 = crc_16((uint8_t *)&p, sizeof(Config_TypeDef));
+	if(crc16 != p.crc16||p.crc16==0xff)
+	{
+		StringDisplay( "机号读取失败！", 0, 0,1, ScreenBuffer );
+		OSTimeDlyHMSM(0,0,3,0);
+	}
+	Clean_Lcd(ScreenBuffer);
+	StringDisplay( "机号设置", 0, 0,1, ScreenBuffer );
+	StringDisplay( "本机区号:", 2, 0,0, ScreenBuffer );
+	StringDisplay( "本机机号:", 4, 0,0, ScreenBuffer );
+	DisplayValueN( p.config.machine_cfg.area_code, 2, 56, 0, 3,ScreenBuffer );
+	DisplayValueN( p.config.machine_cfg.area_machine, 4, 56, 0, 3,ScreenBuffer );
+	for(;;){
+		DisplayValueN( p.config.machine_cfg.area_code, 2, 56, 0, 3,ScreenBuffer );
+		DisplayValueN( p.config.machine_cfg.area_machine, 4, 56, 0, 3,ScreenBuffer );
+		switch(Cursor){
+			case area_code_Cursor:key = input_value8(&p.config.machine_cfg.area_code, 3, 2, 56); break;
+			case area_machine_Cursor:key = input_value8(&p.config.machine_cfg.area_machine, 3, 4, 56); break;
+		}
+		switch(key)
+		{
+#if MAIN_BOARD==1
+			case Key_x:
+				if(Cursor==area_code_Cursor)Cursor=area_machine_Cursor;
+				else Cursor=area_code_Cursor;
+				break;
+#endif
+#if MAIN_BOARD==2
+			case Key_Up:
+				if(Cursor==area_machine_Cursor)Cursor=area_code_Cursor;break;
+			case Key_Down:
+				if(Cursor==area_code_Cursor)Cursor=area_machine_Cursor;break;
+#endif
+			case Key_Set:
+				Config = p.config;
+				config_store();
+				break;
+			case Key_Return: return 0;
+			case Key_None:  return 1;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
